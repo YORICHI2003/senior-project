@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <!-- Include Razorpay script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h1>Payment Page</h1>
+    
+    <form action="/payment_success" method="POST">
+        <input type="hidden" name="amount" value="1000"> <!-- Amount in paisa -->
+        <input type="hidden" name="currency" value="INR">
+        <!-- Other hidden input fields as required -->
+        <button type="button" id="rzp-button">Pay Now</button>
+    </form>
+
+    <script>
+        var options = {
+            "key": "YOUR_RAZORPAY_API_KEY",
+            "amount": document.querySelector('input[name="amount"]').value,
+            "currency": document.querySelector('input[name="currency"]').value,
+            "name": "Your Company Name",
+            "description": "Purchase Description",
+            "handler": function(response) {
+                // Handle successful payment here
+                alert('Payment successful!');
+                console.log(response);
+            },
+            "prefill": {
+                "name": "Customer Name",
+                "email": "customer@example.com"
+            },
+            "theme": {
+                "color": "#F37254"
+            }
+        };
+        var rzp = new Razorpay(options);
+        document.getElementById('rzp-button').onclick = function(e) {
+            rzp.open();
+            e.preventDefault();
+        }
+    </script>
+</body>
+</html>
